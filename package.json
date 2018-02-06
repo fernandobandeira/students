@@ -19,5 +19,9 @@
         "stylus": "^0.54.5",
         "stylus-loader": "^3.0.1",
         "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "bootstrap": "^4.0.0",
+        "popper.js": "^1.12.9"
     }
 }

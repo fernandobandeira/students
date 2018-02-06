@@ -1,0 +1,42 @@
+@extends('main')
+
+@section('content')
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h1 class="h2">Editando {{$student->nome}}</h1>
+</div>
+<form action="{{ route('students.update', $student) }}" method="POST">
+  <input name="_method" type="hidden" value="PUT">
+  {{ csrf_field() }}
+  <div class="form-group">
+    <label for="nome">Nome</label>
+    <input name="nome" value="{{ old('nome', $student->nome) }}" type="text" class="form-control @if($errors->has('nome')) is-invalid @endif" id="nome" aria-describedby="nome" placeholder="Nome Completo">    
+    @if($errors->has('nome'))
+    <div class="invalid-feedback">
+      {{  $errors->first('nome')  }}
+    </div>
+    @endif
+  </div>
+  <div class="form-group">
+    <label for="cpf">CPF</label>
+    <input name="cpf" value="{{ old('cpf', $student->cpf) }}" type="text" class="form-control @if($errors->has('cpf')) is-invalid @endif" id="cpf" placeholder="xxx.xxx.xxx-xx">
+    @if($errors->has('cpf'))
+    <div class="invalid-feedback">
+      {{  $errors->first('cpf')  }}
+    </div>
+    @endif
+  </div>
+  <div class="form-group">
+    <label for="rg">RG</label>
+    <input name="rg" value="{{ old('rg', $student->rg) }}" type="text" class="form-control" id="rg" aria-describedby="rg" placeholder="xxxxxxxx-xx">    
+  </div>
+  <div class="form-group">
+    <label for="nascimento">Data de Nascimento</label>
+    <input name="nascimento" value="{{ old('nascimento', $student->nascimento ? $student->nascimento->format('Y-m-d') : '') }}" type="date" class="form-control" id="nascimento" aria-describedby="nascimento" placeholder="dd/mm/aaaa">    
+  </div>
+  <div class="form-group">
+    <label for="telefone">Telefone</label>
+    <input name="telefone" value="{{ old('telefone', $student->telefone) }}" type="tel" class="form-control" id="telefone" aria-describedby="telefone" placeholder="(xx) xxxx-xxxx">    
+  </div>
+  <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
+@endsection
