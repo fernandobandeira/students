@@ -23,13 +23,13 @@ class StudentRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {        
+    {
         $rules = [
             'nome' => 'required',
-            'cpf' => [
-                'required',                  
-                new Cpf
-            ]
+            'cpf'  => [
+                'required',
+                new Cpf(),
+            ],
         ];
 
         if ($this->method() == 'PUT') {

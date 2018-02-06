@@ -15,7 +15,7 @@ Route::as('home')->get('/', function () {
     return view('main');
 });
 
-Route::prefix('alunos')->as('students.')->group(function() {
+Route::prefix('alunos')->as('students.')->group(function () {
     Route::get('/', 'StudentsController@index')->name('index');
     Route::get('/criar', 'StudentsController@create')->name('create');
     Route::get('{student}/editar', 'StudentsController@edit')->name('edit');
