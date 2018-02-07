@@ -24,3 +24,13 @@ Route::prefix('alunos')->as('students.')->group(function () {
     Route::put('{student}', 'StudentsController@update')->name('update');
     Route::delete('{student}', 'StudentsController@destroy')->name('destroy');
 });
+
+Route::prefix('cursos')->as('courses.')->group(function () {
+    Route::get('/', 'CoursesController@index')->name('index');
+    Route::get('/criar', 'CoursesController@create')->name('create');
+    Route::get('{course}/editar', 'CoursesController@edit')->name('edit');
+    Route::get('{course}/deletar', 'CoursesController@delete')->name('delete');
+    Route::post('/', 'CoursesController@store')->name('store');
+    Route::put('{course}', 'CoursesController@update')->name('update');
+    Route::delete('{course}', 'CoursesController@destroy')->name('destroy');
+});

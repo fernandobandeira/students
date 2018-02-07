@@ -30,6 +30,11 @@
                   Alunos
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('courses.index') }}">
+                  Cursos
+                </a>
+              </li>
             </ul>
           </div>
         </nav>
