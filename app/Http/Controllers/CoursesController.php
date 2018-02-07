@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CourseRequest;
 use App\Course;
+use App\Http\Requests\CourseRequest;
 use Illuminate\Http\Request;
 
 class CoursesController extends Controller

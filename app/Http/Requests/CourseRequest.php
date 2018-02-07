@@ -24,11 +24,11 @@ class CourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'required',
-            'mensalidade' => 'required|min:0|numeric',
+            'nome'            => 'required',
+            'mensalidade'     => 'required|min:0|numeric',
             'valor_matricula' => 'required|min:0|numeric',
-            'periodo' => 'required',
-            'duracao' => 'required|integer|min:0|max:999',
+            'periodo'         => 'required',
+            'duracao'         => 'required|integer|min:0|max:999',
         ];
     }
 }
