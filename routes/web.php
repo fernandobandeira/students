@@ -34,3 +34,9 @@ Route::prefix('cursos')->as('courses.')->group(function () {
     Route::put('{course}', 'CoursesController@update')->name('update');
     Route::delete('{course}', 'CoursesController@destroy')->name('destroy');
 });
+
+Route::prefix('matriculas')->as('registrations.')->group(function () {
+    Route::get('/', 'RegistrationsController@index')->name('index');
+    Route::get('/criar', 'RegistrationsController@create')->name('create');
+    Route::post('/', 'RegistrationsController@store')->name('store');
+});

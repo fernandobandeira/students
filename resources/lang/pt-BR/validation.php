@@ -141,6 +141,8 @@ return [
         'second'                => 'segundo',
         'sex'                   => 'sexo',
         'state'                 => 'estado',
+        'student_id'            => 'aluno',
+        'course_id'             => 'curso',
         'subject'               => 'assunto',
         'text'                  => 'texto',
         'time'                  => 'hora',

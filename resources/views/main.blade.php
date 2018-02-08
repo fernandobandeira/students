@@ -35,6 +35,11 @@
                   Cursos
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('registrations.index') }}">
+                  Matrículas
+                </a>
+              </li>
             </ul>
           </div>
         </nav>
