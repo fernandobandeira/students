@@ -8,11 +8,13 @@ class Registration extends Model
 {
     protected $guarded = ['id'];
 
-    public function student() {
+    public function student()
+    {
         return $this->belongsto('App\Student');
     }
 
-    public function course() {
+    public function course()
+    {
         return $this->belongsto('App\Course');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Cpf;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegistrationRequest extends FormRequest
@@ -25,9 +24,9 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_id' => 'required|exists:courses,id',
+            'course_id'  => 'required|exists:courses,id',
             'student_id' => 'required|exists:students,id',
-            'ano' => 'required|date_format:Y',
+            'ano'        => 'required|date_format:Y',
         ];
     }
 }

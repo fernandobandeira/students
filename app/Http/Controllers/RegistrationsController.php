@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Course;
 use App\Http\Requests\RegistrationRequest;
 use App\Registration;
 use App\Student;
-use App\Course;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class RegistrationsController extends Controller
@@ -14,11 +14,11 @@ class RegistrationsController extends Controller
     public function index(Request $request)
     {
         $registrations = Registration::query();
-        if (! $request->inativa) {
+        if (!$request->inativa) {
             $registrations = $registrations->where('ativa', true);
         }
         if ($request->nome) {
-            $registrations = $registrations->whereHas('student', function($q) use($request) {
+            $registrations = $registrations->whereHas('student', function ($q) use ($request) {
                 return $q->where('nome', 'like', '%'.$request->nome.'%');
             });
         }
@@ -50,13 +50,13 @@ class RegistrationsController extends Controller
         $mesmoperiodo = Registration::where('student_id', $request->student_id)
             ->where('ativa', 1)
             ->where('ano', $request->ano)
-            ->whereHas('course', function($q) use($course) {
+            ->whereHas('course', function ($q) use ($course) {
                 return $q->where('periodo', $course->periodo);
             })
             ->count();
         if ($mesmoperiodo) {
             throw ValidationException::withMessages([
-                'student_id' => 'O aluno já está matriculado em outro curso no mesmo período este ano.'
+                'student_id' => 'O aluno já está matriculado em outro curso no mesmo período este ano.',
             ]);
         }
 
