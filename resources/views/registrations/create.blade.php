@@ -45,7 +45,7 @@
   </div>
   <div class="form-group">
     <div class="form-check">
-      <input class="form-check-input" name="ativa" type="checkbox" value="1" id="ativa" checked>
+      <input class="form-check-input" name="ativa" type="checkbox" value="1" id="ativa" @if(old('ativa') == 1 || !$errors->any()) checked @endif>
       <label class="form-check-label" for="ativa">
         Ativa
       </label>
@@ -53,7 +53,7 @@
   </div>
   <div class="form-group">
     <div class="form-check">
-      <input class="form-check-input" name="paga" type="checkbox" value="1" id="paga">
+      <input class="form-check-input" name="paga" type="checkbox" value="1" id="paga" @if(old('paga') == 1) checked @endif>
       <label class="form-check-label" for="paga">
         Paga
       </label>

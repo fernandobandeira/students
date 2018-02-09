@@ -11,17 +11,37 @@ use Illuminate\Validation\ValidationException;
 
 class RegistrationsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $registrations = Registration::query();
+        if (! $request->inativa) {
+            $registrations = $registrations->where('ativa', true);
+        }
+        if ($request->nome) {
+            $registrations = $registrations->whereHas('student', function($q) use($request) {
+                return $q->where('nome', 'like', '%'.$request->nome.'%');
+            });
+        }
+        if ($request->course_id) {
+            $registrations = $registrations->where('course_id', $request->course_id);
+        }
+        if ($request->ano) {
+            $registrations = $registrations->where('ano', $request->ano);
+        }
+        if ($request->paga) {
+            $registrations = $registrations->where('paga', true);
+        }
+
         return view('registrations.index')
-            ->with('registrations', Registration::All());
+            ->with('registrations', $registrations->get())
+            ->with('courses', Course::All());
     }
 
     public function create()
     {
         return view('registrations.create')
-        ->with('courses', Course::All())
-        ->with('students', Student::All());
+            ->with('courses', Course::All())
+            ->with('students', Student::All());
     }
 
     public function store(RegistrationRequest $request)
