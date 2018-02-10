@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Http\Requests\RegistrationRequest;
+use App\Payment;
 use App\Registration;
 use App\Student;
-use App\Payment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -32,7 +32,7 @@ class RegistrationsController extends Controller
             $registrations = $registrations->where('ano', $request->ano);
         }
         if ($request->paga) {
-            $registrations = $registrations->whereDoesntHave('payments', function($q) {
+            $registrations = $registrations->whereDoesntHave('payments', function ($q) {
                 return $q->where('pago', false)
                     ->where('data_final', '<', Carbon::now());
             });
@@ -68,16 +68,16 @@ class RegistrationsController extends Controller
         $registration = Registration::create($request->all());
         $data = Carbon::now();
         Payment::create([
-            'nome' => 'Matrícula',
-            'valor' => $course->valor_matricula,            
-            'data_final' => $data,
+            'nome'            => 'Matrícula',
+            'valor'           => $course->valor_matricula,
+            'data_final'      => $data,
             'registration_id' => $registration->id,
         ]);
         for ($i = 1; $i <= $course->duracao; $i++) {
             Payment::create([
-                'nome' => 'Mensalidade '.$i.'/'.$course->duracao,
-                'valor' => $course->mensalidade,            
-                'data_final' => $data,
+                'nome'            => 'Mensalidade '.$i.'/'.$course->duracao,
+                'valor'           => $course->mensalidade,
+                'data_final'      => $data,
                 'registration_id' => $registration->id,
             ]);
             $data->addMonth();
@@ -88,7 +88,8 @@ class RegistrationsController extends Controller
             ->with('success', 'Matrícula salva com sucesso.');
     }
 
-    public function show(Registration $registration) {
+    public function show(Registration $registration)
+    {
         return view('registrations.show')
             ->with('registration', $registration);
     }

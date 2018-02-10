@@ -9,12 +9,13 @@ class Registration extends Model
 {
     protected $guarded = ['id'];
 
-    public function getPagaAttribute() {
+    public function getPagaAttribute()
+    {
         $payments = $this->payments;
         $payments = $payments->where('pago', false)
             ->where('data_final', '<', Carbon::now());
 
-        if($payments->count() !== 0) {
+        if ($payments->count() !== 0) {
             return 'Não';
         }
 
