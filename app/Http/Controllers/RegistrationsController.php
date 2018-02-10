@@ -18,8 +18,8 @@ class RegistrationsController extends Controller
         $registrations = Registration::query()
             ->with('payments');
         if (!$request->inativa) {
-            $registrations = $registrations->where(function($q) {
-                # cancelado no mesmo mes ou nao foi cancelada
+            $registrations = $registrations->where(function ($q) {
+                // cancelado no mesmo mes ou nao foi cancelada
                 return $q->whereMonth('data_cancelamento', Carbon::now()->month)
                     ->whereYear('data_cancelamento', Carbon::now()->year)
                     ->orWhere('data_cancelamento', null);
@@ -38,11 +38,11 @@ class RegistrationsController extends Controller
         }
         if ($request->paga) {
             $registrations = $registrations->whereDoesntHave('payments', function ($q) {
-                #paga as mensalidades até o mes atual
+                //paga as mensalidades até o mes atual
                 return $q->where('pago', false)
                     ->where('data_final', '<', Carbon::now());
             });
-        }        
+        }
 
         return view('registrations.index')
             ->with('registrations', $registrations->paginate(15))
@@ -120,11 +120,11 @@ class RegistrationsController extends Controller
             foreach ($pendente as $pagamento) {
                 $pagamento->delete();
             }
-            # multa de 1% para cada mes nao cumprido
+            // multa de 1% para cada mes nao cumprido
             Payment::create([
-                'nome' => 'Multa de Cancelamento',
-                'valor' => $valor_pendente * 0.01,
-                'data_final' => Carbon::now(),
+                'nome'            => 'Multa de Cancelamento',
+                'valor'           => $valor_pendente * 0.01,
+                'data_final'      => Carbon::now(),
                 'registration_id' => $registration->id,
             ]);
         }

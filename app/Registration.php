@@ -16,11 +16,12 @@ class Registration extends Model
     public function getAtivaAttribute()
     {
         $data_cancelamento = $this->data_cancelamento;
-        
+
         if ($data_cancelamento) {
             if ($data_cancelamento->format('Y-m') == Carbon::now()->format('Y-m')) {
                 return 'Sim';
             }
+
             return 'Não';
         }
 
