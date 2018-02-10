@@ -39,8 +39,8 @@ class CoursesController extends Controller
         $course->update($request->all());
 
         return redirect()
-        ->route('courses.index')
-        ->with('success', 'Curso alterado com sucesso.');
+            ->route('courses.index')
+            ->with('success', 'Curso alterado com sucesso.');
     }
 
     public function delete(Course $course)

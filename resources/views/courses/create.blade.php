@@ -17,7 +17,7 @@
   </div>
   <div class="form-group">
     <label for="mensalidade">Valor da Mensalidade</label>
-    <input name="mensalidade" value="{{ old('mensalidade') }}" type="text" class="form-control @if($errors->has('mensalidade')) is-invalid @endif" id="mensalidade" aria-describedby="mensalidade" placeholder="0000.00">    
+    <input name="mensalidade" value="{{ old('mensalidade') }}" type="number" step="0.01" class="form-control @if($errors->has('mensalidade')) is-invalid @endif" id="mensalidade" aria-describedby="mensalidade" placeholder="0000.00">    
     @if($errors->has('mensalidade'))
     <div class="invalid-feedback">
       {{  $errors->first('mensalidade')  }}
@@ -26,7 +26,7 @@
   </div>
   <div class="form-group">
     <label for="valor_matricula">Valor da Matrícula</label>
-    <input name="valor_matricula" value="{{ old('valor_matricula') }}" type="text" class="form-control @if($errors->has('valor_matricula')) is-invalid @endif" id="valor_matricula" aria-describedby="valor_matricula" placeholder="0000.00">    
+    <input name="valor_matricula" value="{{ old('valor_matricula') }}" type="number" step="0.01" class="form-control @if($errors->has('valor_matricula')) is-invalid @endif" id="valor_matricula" aria-describedby="valor_matricula" placeholder="0000.00">    
     @if($errors->has('valor_matricula'))
     <div class="invalid-feedback">
       {{  $errors->first('valor_matricula')  }}

@@ -35,7 +35,7 @@
           <td>{{ $course->mensalidade }}</td>
           <td>{{ $course->valor_matricula }}</td>
           <td>{{ $course->periodo }}</td>
-          <td>{{ $course->duracao }}</td>
+          <td>{{ $course->duracao }} meses</td>
           <td>
             <a href="{{ route('courses.edit', $course) }}" class="btn btn-sm btn-outline-secondary">Editar</a>
             <a href="{{ route('courses.delete', $course) }}" class="btn btn-sm btn-outline-secondary">Deletar</a>

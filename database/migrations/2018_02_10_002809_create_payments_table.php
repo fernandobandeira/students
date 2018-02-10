@@ -15,7 +15,7 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('nome');
+            $table->string('nome');
             $table->decimal('valor', 8, 2)->unsigned();
             $table->boolean('pago')->default(false);
             $table->date('data_final');

@@ -41,3 +41,8 @@ Route::prefix('matriculas')->as('registrations.')->group(function () {
     Route::post('/', 'RegistrationsController@store')->name('store');
     Route::get('/{registration}', 'RegistrationsController@show')->name('show');
 });
+
+Route::prefix('pagamentos')->as('payments.')->group(function () {
+    Route::get('/{payment}', 'PaymentsController@show')->name('show');
+    Route::put('{payment}', 'PaymentsController@update')->name('update');
+});

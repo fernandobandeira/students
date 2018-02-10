@@ -6,6 +6,8 @@ use App\Course;
 use App\Http\Requests\RegistrationRequest;
 use App\Registration;
 use App\Student;
+use App\Payment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -13,9 +15,10 @@ class RegistrationsController extends Controller
 {
     public function index(Request $request)
     {
-        $registrations = Registration::query();
+        $registrations = Registration::query()
+            ->with('payments');
         if (!$request->inativa) {
-            $registrations = $registrations->where('ativa', true);
+            //$registrations = $registrations->where('ativa', true);
         }
         if ($request->nome) {
             $registrations = $registrations->whereHas('student', function ($q) use ($request) {
@@ -29,7 +32,10 @@ class RegistrationsController extends Controller
             $registrations = $registrations->where('ano', $request->ano);
         }
         if ($request->paga) {
-            $registrations = $registrations->where('paga', true);
+            $registrations = $registrations->whereDoesntHave('payments', function($q) {
+                return $q->where('pago', false)
+                    ->where('data_final', '<', Carbon::now());
+            });
         }
 
         return view('registrations.index')
@@ -48,7 +54,6 @@ class RegistrationsController extends Controller
     {
         $course = Course::find($request->course_id);
         $mesmoperiodo = Registration::where('student_id', $request->student_id)
-            ->where('ativa', 1)
             ->where('ano', $request->ano)
             ->whereHas('course', function ($q) use ($course) {
                 return $q->where('periodo', $course->periodo);
@@ -60,7 +65,23 @@ class RegistrationsController extends Controller
             ]);
         }
 
-        Registration::create($request->all());
+        $registration = Registration::create($request->all());
+        $data = Carbon::now();
+        Payment::create([
+            'nome' => 'Matrícula',
+            'valor' => $course->valor_matricula,            
+            'data_final' => $data,
+            'registration_id' => $registration->id,
+        ]);
+        for ($i = 1; $i <= $course->duracao; $i++) {
+            Payment::create([
+                'nome' => 'Mensalidade '.$i.'/'.$course->duracao,
+                'valor' => $course->mensalidade,            
+                'data_final' => $data,
+                'registration_id' => $registration->id,
+            ]);
+            $data->addMonth();
+        }
 
         return redirect()
             ->route('registrations.index')

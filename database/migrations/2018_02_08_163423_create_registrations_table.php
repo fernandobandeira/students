@@ -15,11 +15,10 @@ class CreateRegistrationsTable extends Migration
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('ativa')->default(true);
-            $table->boolean('paga')->default(false);
             $table->integer('ano')->unsigned();
             $table->integer('student_id')->unsigned();
             $table->integer('course_id')->unsigned();
+            $table->date('data_cancelamento')->nullable();
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students');
