@@ -40,6 +40,8 @@ Route::prefix('matriculas')->as('registrations.')->group(function () {
     Route::get('/criar', 'RegistrationsController@create')->name('create');
     Route::post('/', 'RegistrationsController@store')->name('store');
     Route::get('/{registration}', 'RegistrationsController@show')->name('show');
+    Route::get('{registration}/cancelar', 'RegistrationsController@delete')->name('delete');
+    Route::delete('{registration}', 'RegistrationsController@destroy')->name('destroy');
 });
 
 Route::prefix('pagamentos')->as('payments.')->group(function () {

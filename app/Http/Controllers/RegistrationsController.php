@@ -18,7 +18,12 @@ class RegistrationsController extends Controller
         $registrations = Registration::query()
             ->with('payments');
         if (!$request->inativa) {
-            //$registrations = $registrations->where('ativa', true);
+            $registrations = $registrations->where(function($q) {
+                # cancelado no mesmo mes ou nao foi cancelada
+                return $q->whereMonth('data_cancelamento', Carbon::now()->month)
+                    ->whereYear('data_cancelamento', Carbon::now()->year)
+                    ->orWhere('data_cancelamento', null);
+            });
         }
         if ($request->nome) {
             $registrations = $registrations->whereHas('student', function ($q) use ($request) {
@@ -33,10 +38,11 @@ class RegistrationsController extends Controller
         }
         if ($request->paga) {
             $registrations = $registrations->whereDoesntHave('payments', function ($q) {
+                #paga as mensalidades até o mes atual
                 return $q->where('pago', false)
                     ->where('data_final', '<', Carbon::now());
             });
-        }
+        }        
 
         return view('registrations.index')
             ->with('registrations', $registrations->get())
@@ -92,5 +98,39 @@ class RegistrationsController extends Controller
     {
         return view('registrations.show')
             ->with('registration', $registration);
+    }
+
+    public function delete(Registration $registration)
+    {
+        return view('registrations.delete')
+        ->with('registration', $registration);
+    }
+
+    public function destroy(Request $request, Registration $registration)
+    {
+        $registration->data_cancelamento = Carbon::now();
+        $registration->save();
+
+        $pendente = $registration->payments()
+            ->where('pago', false)
+            ->where('nome', '!=', 'Matrícula')
+            ->get();
+        $valor_pendente = $pendente->sum('valor');
+        if ($valor_pendente) {
+            foreach ($pendente as $pagamento) {
+                $pagamento->delete();
+            }
+            # multa de 1% para cada mes nao cumprido
+            Payment::create([
+                'nome' => 'Multa de Cancelamento',
+                'valor' => $valor_pendente * 0.01,
+                'data_final' => Carbon::now(),
+                'registration_id' => $registration->id,
+            ]);
+        }
+
+        return redirect()
+            ->route('registrations.show', $registration)
+            ->with('success', 'Matrícula cancelada com sucesso.');
     }
 }

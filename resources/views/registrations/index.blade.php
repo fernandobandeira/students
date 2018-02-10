@@ -88,7 +88,7 @@
           <td>{{ $registration->ano }}</td>
           <td>{{ $registration->course->nome }}</td>
           <td>{{ $registration->student->nome }}</td>
-          <td>{{ $registration->ativa ? 'Sim' : 'Não' }}</td>
+          <td>{{ $registration->ativa }}</td>
           <td>{{ $registration->paga }}</td>
           <td><a href="{{ route('registrations.show', $registration) }}" class="btn btn-sm btn-outline-secondary">Visualizar</a></td>
         </tr>

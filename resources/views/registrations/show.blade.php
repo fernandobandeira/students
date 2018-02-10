@@ -3,6 +3,9 @@
 @section('content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
   <h1 class="h2">Matrícula {{ $registration->id }}</h1>
+  @if($registration->data_cancelamento)
+  <strong>Cancelada em: {{ $registration->data_cancelamento->format('d/m/Y') }}</strong>
+  @endif
 </div>
 <div class="row">
   <div class="col-sm-6">
@@ -67,5 +70,8 @@
     @endif
   @endforeach
 </p>
+@endif
+@if(!$registration->data_cancelamento)
+  <a href="{{ route('registrations.delete', $registration) }}" class="btn btn-sm btn-outline-danger">Cancelar Matrícula</a>
 @endif
 @endsection
