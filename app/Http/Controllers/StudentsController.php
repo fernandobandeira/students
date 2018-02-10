@@ -11,7 +11,7 @@ class StudentsController extends Controller
     public function index()
     {
         return view('students.index')
-            ->with('students', Student::All());
+            ->with('students', Student::paginate(15));
     }
 
     public function create()

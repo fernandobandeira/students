@@ -45,7 +45,7 @@ class RegistrationsController extends Controller
         }        
 
         return view('registrations.index')
-            ->with('registrations', $registrations->get())
+            ->with('registrations', $registrations->paginate(15))
             ->with('courses', Course::All());
     }
 
