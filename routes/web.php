@@ -39,4 +39,5 @@ Route::prefix('matriculas')->as('registrations.')->group(function () {
     Route::get('/', 'RegistrationsController@index')->name('index');
     Route::get('/criar', 'RegistrationsController@create')->name('create');
     Route::post('/', 'RegistrationsController@store')->name('store');
+    Route::get('/{registration}', 'RegistrationsController@show')->name('show');
 });

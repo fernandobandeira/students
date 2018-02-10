@@ -63,7 +63,12 @@ class RegistrationsController extends Controller
         Registration::create($request->all());
 
         return redirect()
-        ->route('registrations.index')
-        ->with('success', 'Matrícula salva com sucesso.');
+            ->route('registrations.index')
+            ->with('success', 'Matrícula salva com sucesso.');
+    }
+
+    public function show(Registration $registration) {
+        return view('registrations.show')
+            ->with('registration', $registration);
     }
 }

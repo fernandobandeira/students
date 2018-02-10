@@ -78,6 +78,7 @@
         <th>Aluno</th>
         <th>Ativa</th>
         <th>Paga</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -89,6 +90,7 @@
           <td>{{ $registration->student->nome }}</td>
           <td>{{ $registration->ativa ? 'Sim' : 'Não' }}</td>
           <td>{{ $registration->paga ? 'Sim' : 'Não' }}</td>
+          <td><a href="{{ route('registrations.show', $registration) }}" class="btn btn-sm btn-outline-secondary">Visualizar</a></td>
         </tr>
       @endforeach
     </tbody>
