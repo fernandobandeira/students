@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use DB;
 use Excel;
 use App\Course;
 use Illuminate\Console\Command;
@@ -39,22 +40,37 @@ class ImportCourses extends Command
      */
     public function handle()
     {
-        Excel::filter('chunk')
-            ->load(storage_path('csvs/courses_file.csv'))
-            ->chunk(250, function($results) {
-                $data = $results->map(function($e) {
-                    return [
-                        'id' => $e['id'],
-                        'nome' => $e['course_name'],
-                        'mensalidade' => $e['monthly_amount'],
-                        'valor_matricula' => $e['registration_tax'],
-                        'periodo' => $e['period'],
-                        'duracao' => $e['duration'],
-                    ];
-                });
-                Course::insert($data->toArray());
-            });
+        $bar = $this->output->createProgressBar();
 
-        $this->info('Cursos importados com sucesso');
+        if(($handle = fopen(storage_path('csvs/courses_file.csv'), 'r')) !== false) {
+            $header = fgetcsv($handle);
+            $courses = [];
+            $row = fgetcsv($handle);
+            $cont = 0;
+            while($row !== false) {
+                $courses[] = [
+                    'id' => $row[0],
+                    'nome' => $row[1],
+                    'mensalidade' => $row[2],
+                    'valor_matricula' => $row[3],
+                    'periodo' => $row[4],
+                    'duracao' => $row[5],
+                ];                
+                $cont++;
+                $row = fgetcsv($handle);
+
+                if ($cont === 250 || $row === false) {
+                    $cont = 0;   
+                    Course::insert($courses);
+                    $courses = [];                    
+                }
+
+                $bar->advance();
+            }
+            fclose($handle);
+        }
+
+        $bar->finish();
+        DB::select("SELECT setval(pg_get_serial_sequence('courses', 'id'), coalesce(max(id) + 1,1), false) FROM courses;");
     }
 }

@@ -57,4 +57,22 @@ class StudentsController extends Controller
         ->route('students.index')
         ->with('success', 'Aluno excluído com sucesso.');
     }
+
+    public function api(Request $request) {
+        $students = Student::where('nome', 'like', $request->search.'%')
+            ->take(100)
+            ->get();
+
+        return [
+            'results' => $students->map(function($s) {
+                return [
+                    'id' => $s->id,
+                    'text' => $s->nome,
+                ];
+            }),
+            'pagination' => [
+                'more' => false,
+            ],
+        ];
+    }
 }

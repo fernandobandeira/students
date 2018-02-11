@@ -52,5 +52,6 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="{{ mix('/js/app.js') }}"></script>
+    @stack('js')
   </body>
 </html>

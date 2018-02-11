@@ -30,7 +30,7 @@ class RegistrationsController extends Controller
                 return $q->where('nome', 'like', '%'.$request->nome.'%');
             });
         }
-        if ($request->course_id) {
+        if (isset($request->course_id)) {
             $registrations = $registrations->where('course_id', $request->course_id);
         }
         if ($request->ano) {
@@ -52,8 +52,7 @@ class RegistrationsController extends Controller
     public function create()
     {
         return view('registrations.create')
-            ->with('courses', Course::All())
-            ->with('students', Student::All());
+            ->with('courses', Course::All());            
     }
 
     public function store(RegistrationRequest $request)
@@ -71,23 +70,7 @@ class RegistrationsController extends Controller
             ]);
         }
 
-        $registration = Registration::create($request->all());
-        $data = Carbon::now();
-        Payment::create([
-            'nome'            => 'Matrícula',
-            'valor'           => $course->valor_matricula,
-            'data_final'      => $data,
-            'registration_id' => $registration->id,
-        ]);
-        for ($i = 1; $i <= $course->duracao; $i++) {
-            Payment::create([
-                'nome'            => 'Mensalidade '.$i.'/'.$course->duracao,
-                'valor'           => $course->mensalidade,
-                'data_final'      => $data,
-                'registration_id' => $registration->id,
-            ]);
-            $data->addMonth();
-        }
+        Registration::create($request->all());
 
         return redirect()
             ->route('registrations.index')

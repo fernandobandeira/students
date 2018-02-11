@@ -25,7 +25,7 @@
     <div class="col-sm-4">
       <div class="form-group">
         <label for="course_id">Curso</label>
-        <select class="form-control" name="course_id" id="course_id">
+        <select class="form-control courses" name="course_id" id="course_id">
           <option value="">Selecione um Curso</option>
           @foreach($courses as $course)
             <option value="{{ $course->id }}" @if(Request::get('course_id') == $course->id) selected @endif>{{ $course->nome }} ({{ $course->id }})</option>
@@ -98,3 +98,13 @@
   {{ $registrations->links() }}
 </div>
 @endsection
+
+@push('js')
+<script>
+$(document).ready(function() {
+  $('.courses').select2({
+      width: '100%',
+    });
+});
+</script>
+@endpush

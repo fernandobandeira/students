@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use DB;
 use Excel;
 use App\Registration;
 use Illuminate\Console\Command;
@@ -39,20 +40,27 @@ class ImportRegistrations extends Command
      */
     public function handle()
     {
-        Excel::filter('chunk')
-            ->load(storage_path('csvs/registrations_file.csv'))
-            ->chunk(250, function($results) {
-                $data = $results->map(function($e) {
-                    return [
-                        'id' => $e['id'],
-                        'student_id' => $e['student_id'],
-                        'course_id' => $e['course_id'],
-                        'ano' => $e['year'],
-                    ];
-                });
-                Registration::insert($data->toArray());
-            });
+        $bar = $this->output->createProgressBar();
 
-        $this->info('Matrículas importadas com sucesso');
+        if(($handle = fopen(storage_path('csvs/registrations_file.csv'), 'r')) !== false) {
+            $header = fgetcsv($handle);
+            $row = fgetcsv($handle);
+            while($row !== false) {
+                $registration = explode(';', $row[0]);
+                Registration::create([
+                    'id' => $registration[0],
+                    'student_id' => $registration[1],
+                    'course_id' => $registration[2],
+                    'ano' => $registration[3],
+                ]);
+                $row = fgetcsv($handle);
+
+                $bar->advance();
+            }
+            fclose($handle);
+        }
+
+        DB::select("SELECT setval(pg_get_serial_sequence('registrations', 'id'), coalesce(max(id) + 1,1), false) FROM registrations;");
+        $bar->finish();
     }
 }

@@ -55,4 +55,26 @@ class Registration extends Model
     {
         return $this->hasMany('App\Payment');
     }
+
+    public static function boot() {
+        parent::boot();
+        self::created(function($registration) {
+            $data = Carbon::now();
+            Payment::create([
+                'nome'            => 'Matrícula',
+                'valor'           => $registration->course->valor_matricula,
+                'data_final'      => $data,
+                'registration_id' => $registration->id,
+            ]);
+            for ($i = 1; $i <= $registration->course->duracao; $i++) {
+                Payment::create([
+                    'nome'            => 'Mensalidade '.$i.'/'.$registration->course->duracao,
+                    'valor'           => $registration->course->mensalidade,
+                    'data_final'      => $data,
+                    'registration_id' => $registration->id,
+                ]);
+                $data->addMonth();
+            }
+        });
+    }
 }
