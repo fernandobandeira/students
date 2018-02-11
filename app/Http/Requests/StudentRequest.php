@@ -30,6 +30,7 @@ class StudentRequest extends FormRequest
                 'required',
                 new Cpf(),
             ],
+            'nascimento' => 'date_format:Y-m-d',
         ];
 
         if ($this->method() == 'PUT') {

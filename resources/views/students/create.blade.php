@@ -30,7 +30,12 @@
   </div>
   <div class="form-group">
     <label for="nascimento">Data de Nascimento</label>
-    <input name="nascimento" value="{{ old('nascimento') }}" type="date" class="form-control" id="nascimento" aria-describedby="nascimento" placeholder="dd/mm/aaaa">    
+    <input name="nascimento" value="{{ old('nascimento') }}" type="date" class="form-control @if($errors->has('nascimento')) is-invalid @endif" id="nascimento" aria-describedby="nascimento" placeholder="yyyy-mm-dd">    
+    @if($errors->has('nascimento'))
+    <div class="invalid-feedback">
+      {{  $errors->first('nascimento')  }}
+    </div>
+    @endif
   </div>
   <div class="form-group">
     <label for="telefone">Telefone</label>

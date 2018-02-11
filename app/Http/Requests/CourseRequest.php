@@ -25,8 +25,8 @@ class CourseRequest extends FormRequest
     {
         return [
             'nome'            => 'required',
-            'mensalidade'     => 'required|min:0|numeric',
-            'valor_matricula' => 'required|min:0|numeric',
+            'mensalidade'     => 'required|min:0|max:99999999.99|numeric',
+            'valor_matricula' => 'required|min:0|max:99999999.99|numeric',
             'periodo'         => 'required',
             'duracao'         => 'required|integer|min:0|max:999',
         ];
