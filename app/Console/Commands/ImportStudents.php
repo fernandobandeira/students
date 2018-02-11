@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use DB;
-use Excel;
 use App\Student;
+use DB;
 use Illuminate\Console\Command;
 
 class ImportStudents extends Command
@@ -42,28 +41,28 @@ class ImportStudents extends Command
     {
         $bar = $this->output->createProgressBar();
 
-        if(($handle = fopen(storage_path('csvs/students_file.csv'), 'r')) !== false) {
+        if (($handle = fopen(storage_path('csvs/students_file.csv'), 'r')) !== false) {
             $header = fgetcsv($handle);
             $students = [];
             $row = fgetcsv($handle);
             $cont = 0;
-            while($row !== false) {
+            while ($row !== false) {
                 $student = explode(';', $row[0]);
                 $students[] = [
-                    'id' => $student[0],
-                    'nome' => $student[1],
-                    'cpf' => $student[2],
-                    'rg' => $student[3],
-                    'telefone' => $student[4],
+                    'id'         => $student[0],
+                    'nome'       => $student[1],
+                    'cpf'        => $student[2],
+                    'rg'         => $student[3],
+                    'telefone'   => $student[4],
                     'nascimento' => $student[5],
-                ];                
+                ];
                 $cont++;
                 $row = fgetcsv($handle);
 
                 if ($cont === 250 || $row === false) {
-                    $cont = 0;   
+                    $cont = 0;
                     Student::insert($students);
-                    $students = [];                    
+                    $students = [];
                 }
 
                 $bar->advance();
@@ -72,6 +71,6 @@ class ImportStudents extends Command
         }
 
         DB::select("SELECT setval(pg_get_serial_sequence('students', 'id'), coalesce(max(id) + 1,1), false) FROM students;");
-        $bar->finish();        
+        $bar->finish();
     }
 }

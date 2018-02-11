@@ -56,9 +56,10 @@ class Registration extends Model
         return $this->hasMany('App\Payment');
     }
 
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
-        self::created(function($registration) {
+        self::created(function ($registration) {
             $data = Carbon::now();
             Payment::create([
                 'nome'            => 'Matrícula',

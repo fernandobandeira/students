@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use DB;
-use Excel;
 use App\Registration;
+use DB;
 use Illuminate\Console\Command;
 
 class ImportRegistrations extends Command
@@ -42,16 +41,16 @@ class ImportRegistrations extends Command
     {
         $bar = $this->output->createProgressBar();
 
-        if(($handle = fopen(storage_path('csvs/registrations_file.csv'), 'r')) !== false) {
+        if (($handle = fopen(storage_path('csvs/registrations_file.csv'), 'r')) !== false) {
             $header = fgetcsv($handle);
             $row = fgetcsv($handle);
-            while($row !== false) {
+            while ($row !== false) {
                 $registration = explode(';', $row[0]);
                 Registration::create([
-                    'id' => $registration[0],
+                    'id'         => $registration[0],
                     'student_id' => $registration[1],
-                    'course_id' => $registration[2],
-                    'ano' => $registration[3],
+                    'course_id'  => $registration[2],
+                    'ano'        => $registration[3],
                 ]);
                 $row = fgetcsv($handle);
 

@@ -52,7 +52,7 @@ class RegistrationsController extends Controller
     public function create()
     {
         return view('registrations.create')
-            ->with('courses', Course::All());            
+            ->with('courses', Course::All());
     }
 
     public function store(RegistrationRequest $request)

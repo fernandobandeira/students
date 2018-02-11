@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use DB;
-use Excel;
 use App\Course;
+use DB;
 use Illuminate\Console\Command;
 
 class ImportCourses extends Command
@@ -42,27 +41,27 @@ class ImportCourses extends Command
     {
         $bar = $this->output->createProgressBar();
 
-        if(($handle = fopen(storage_path('csvs/courses_file.csv'), 'r')) !== false) {
+        if (($handle = fopen(storage_path('csvs/courses_file.csv'), 'r')) !== false) {
             $header = fgetcsv($handle);
             $courses = [];
             $row = fgetcsv($handle);
             $cont = 0;
-            while($row !== false) {
+            while ($row !== false) {
                 $courses[] = [
-                    'id' => $row[0],
-                    'nome' => $row[1],
-                    'mensalidade' => $row[2],
+                    'id'              => $row[0],
+                    'nome'            => $row[1],
+                    'mensalidade'     => $row[2],
                     'valor_matricula' => $row[3],
-                    'periodo' => $row[4],
-                    'duracao' => $row[5],
-                ];                
+                    'periodo'         => $row[4],
+                    'duracao'         => $row[5],
+                ];
                 $cont++;
                 $row = fgetcsv($handle);
 
                 if ($cont === 250 || $row === false) {
-                    $cont = 0;   
+                    $cont = 0;
                     Course::insert($courses);
-                    $courses = [];                    
+                    $courses = [];
                 }
 
                 $bar->advance();
