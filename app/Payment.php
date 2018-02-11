@@ -10,5 +10,5 @@ class Payment extends Model
         'data_final',
     ];
 
-    protected $guarded = ['id'];
+    protected $guarded = ['created_at'];
 }

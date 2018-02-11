@@ -10,5 +10,5 @@ class Student extends Model
         'nascimento',
     ];
 
-    protected $guarded = ['id'];
+    protected $guarded = ['created_at'];
 }

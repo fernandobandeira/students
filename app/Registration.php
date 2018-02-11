@@ -11,7 +11,7 @@ class Registration extends Model
         'data_cancelamento',
     ];
 
-    protected $guarded = ['id'];
+    protected $guarded = ['created_at'];
 
     public function getAtivaAttribute()
     {
