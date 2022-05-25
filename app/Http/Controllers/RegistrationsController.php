@@ -6,7 +6,6 @@ use App\Course;
 use App\Http\Requests\RegistrationRequest;
 use App\Payment;
 use App\Registration;
-use App\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
